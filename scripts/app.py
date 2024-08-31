@@ -17,12 +17,6 @@ def generate_mesh():
     coeffs = torch.load(data['model_coeffs_path'], map_location='cpu')
     coeffs_dict = split_coeff(coeffs)
 
-    # if exp_component < 1 or exp_component > 45:
-    #     return jsonify({"error": "The expression component must be between 1 and 45"}), 400
-
-    # if change_value < -2.0 or change_value > 2.0:
-    #     return jsonify({"error": "The amount changed must be between -2 and 2"}), 400
-
     open("../emotion.txt", 'w').close()
     with open("../emotion.txt", "a") as file:
         for i, value in enumerate(change_values):
