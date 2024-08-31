@@ -11,25 +11,28 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 @app.route('/generate_mesh', methods=['POST'])
 def generate_mesh():
     data = request.json
-    exp_component = data['exp_component']
-    change_value = data['change_value']
+    change_values = data['change_values']
 
     # Setup for changing expression basis coefficient values
     coeffs = torch.load(data['model_coeffs_path'], map_location='cpu')
     coeffs_dict = split_coeff(coeffs)
 
-    if exp_component < 1 or exp_component > 45:
-        return jsonify({"error": "The expression component must be between 1 and 45"}), 400
+    # if exp_component < 1 or exp_component > 45:
+    #     return jsonify({"error": "The expression component must be between 1 and 45"}), 400
 
-    if change_value < -2.0 or change_value > 2.0:
-        return jsonify({"error": "The amount changed must be between -2 and 2"}), 400
+    # if change_value < -2.0 or change_value > 2.0:
+    #     return jsonify({"error": "The amount changed must be between -2 and 2"}), 400
 
-    coeffs_dict['exp'][0, exp_component - 1] += change_value
+    open("../emotion.txt", 'w').close()
+    with open("../emotion.txt", "a") as file:
+        for i, value in enumerate(change_values):
+            coeffs_dict['exp'][0, i] += value
+            file.write(str(i+1) + " " + str(value) + '\n')
 
     # Initialise the parametric model for expression alteration
     face_model = ParametricFaceModel(fm_model_file='../topo_assets/hifi3dpp_model_info.mat', unwrap_info_file='../topo_assets/unwrap_1024_info.mat', device='cpu')
     output_path = data['output_path']
-    mesh_name = f"{exp_component}_{change_value}.obj"
+    mesh_name = "emotion.obj"
     saved_mesh = save_mesh(path=output_path, mesh_name=mesh_name, coeffs=coeffs, facemodel=face_model)
 
     return jsonify({"saved_mesh": saved_mesh})
