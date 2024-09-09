@@ -43,7 +43,7 @@ def download_mesh(filename):
     else:
         return jsonify({"error": "File not found"}), 404
 
-
+# Non-class based implementation of split_coeff in hifi3dpp.py
 def split_coeff(coeffs):
     '''
     Split the estimated coeffs.
@@ -70,7 +70,8 @@ def split_coeff(coeffs):
     }
 
 
-# Non-class implementation of save_mesh in ours_fit_model.py
+# Non-class implementation of save_mesh in ours_fit_model.py in the original repository:  https://github.com/csbhr/FFHQ-UV
+
 def save_mesh(path, mesh_name, coeffs, facemodel):
     if isinstance(coeffs, dict):
         coeffs = coeffs['coeffs']

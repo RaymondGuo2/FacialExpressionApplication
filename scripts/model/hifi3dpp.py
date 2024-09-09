@@ -1,3 +1,5 @@
+# This code was taken directly from the original github implementation of FFHQ-UV (Bai et al. (2023)), which can be found here: https://github.com/csbhr/FFHQ-UV
+
 import numpy as np
 import torch
 import torch.nn as nn
